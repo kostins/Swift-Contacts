@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Swift Contacts/ABookDataProvider.swift"
+            timestampString = "440290899.505518"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "connection(_:didReceiveResponse:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Swift Contacts/ABookDataProvider.swift"
+            timestampString = "440290901.226502"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "connection(_:didReceiveData:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift_Contacts.ABookDataProvider.connection (Swift_Contacts.ABookDataProvider)(ObjectiveC.NSURLConnection, didReceiveData : ObjectiveC.NSData) -&gt; ()"
+                  moduleName = "Swift Contacts"
+                  urlString = "file:///Users/stephan/first/Swift%20Contacts/Swift%20Contacts/ABookDataProvider.swift"
+                  timestampString = "440292434.292667"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "92"
+                  endingLineNumber = "92"
+                  offsetFromSymbolStart = "46">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift_ContactsTests.ABookDataProvider.connection (Swift_ContactsTests.ABookDataProvider)(ObjectiveC.NSURLConnection, didReceiveData : ObjectiveC.NSData) -&gt; ()"
+                  moduleName = "Swift ContactsTests"
+                  urlString = "file:///Users/stephan/first/Swift%20Contacts/Swift%20Contacts/ABookDataProvider.swift"
+                  timestampString = "440292434.70173"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "92"
+                  endingLineNumber = "92"
+                  offsetFromSymbolStart = "46">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Swift Contacts/ABookDataProvider.swift"
+            timestampString = "440290908.583673"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "connectionDidFinishLoading(_:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift_Contacts.ABookDataProvider.connectionDidFinishLoading (Swift_Contacts.ABookDataProvider)(ObjectiveC.NSURLConnection) -&gt; ()"
+                  moduleName = "Swift Contacts"
+                  urlString = "file:///Users/stephan/first/Swift%20Contacts/Swift%20Contacts/ABookDataProvider.swift"
+                  timestampString = "440292434.293596"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
+                  offsetFromSymbolStart = "63">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift_ContactsTests.ABookDataProvider.connectionDidFinishLoading (Swift_ContactsTests.ABookDataProvider)(ObjectiveC.NSURLConnection) -&gt; ()"
+                  moduleName = "Swift ContactsTests"
+                  urlString = "file:///Users/stephan/first/Swift%20Contacts/Swift%20Contacts/ABookDataProvider.swift"
+                  timestampString = "440292434.702004"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
+                  offsetFromSymbolStart = "63">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Swift Contacts/ABookDataProvider.swift"
+            timestampString = "440290986.554027"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "init()"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift_Contacts.ABookDataProvider.init (Swift_Contacts.ABookDataProvider.Type)() -&gt; Swift_Contacts.ABookDataProvider"
+                  moduleName = "Swift Contacts"
+                  urlString = "file:///Users/stephan/first/Swift%20Contacts/Swift%20Contacts/ABookDataProvider.swift"
+                  timestampString = "440292434.294465"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "24"
+                  endingLineNumber = "24"
+                  offsetFromSymbolStart = "232">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift_ContactsTests.ABookDataProvider.init (Swift_ContactsTests.ABookDataProvider.Type)() -&gt; Swift_ContactsTests.ABookDataProvider"
+                  moduleName = "Swift ContactsTests"
+                  urlString = "file:///Users/stephan/first/Swift%20Contacts/Swift%20Contacts/ABookDataProvider.swift"
+                  timestampString = "440292434.702248"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "24"
+                  endingLineNumber = "24"
+                  offsetFromSymbolStart = "232">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Swift Contacts/ABookDataProvider.swift"
+            timestampString = "440291008.501765"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "init()"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift_Contacts.ABookDataProvider.init (Swift_Contacts.ABookDataProvider.Type)() -&gt; Swift_Contacts.ABookDataProvider"
+                  moduleName = "Swift Contacts"
+                  urlString = "file:///Users/stephan/first/Swift%20Contacts/Swift%20Contacts/ABookDataProvider.swift"
+                  timestampString = "440292434.295349"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "1208">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift_ContactsTests.ABookDataProvider.init (Swift_ContactsTests.ABookDataProvider.Type)() -&gt; Swift_ContactsTests.ABookDataProvider"
+                  moduleName = "Swift ContactsTests"
+                  urlString = "file:///Users/stephan/first/Swift%20Contacts/Swift%20Contacts/ABookDataProvider.swift"
+                  timestampString = "440292434.702458"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "1208">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Swift Contacts/ABookDataProvider.swift"
+            timestampString = "440292458.845853"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "connection(_:didReceiveResponse:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
