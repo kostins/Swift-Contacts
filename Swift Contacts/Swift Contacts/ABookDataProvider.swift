@@ -5,6 +5,9 @@
 //  Created by Stephan Kostine on 2014-12-13.
 //  Copyright (c) 2014 istra. All rights reserved.
 //
+//  Data model for Address Book
+//  Loads users from randomuser server
+//  Data Source for Master Tabveview
 
 import UIKit
 
@@ -30,7 +33,9 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
     private var count: Int{
         return users.count
     }
+    
     var isDataLoaded: Bool {return responseData == nil}
+    
     func getUserName(index: Int) -> String{
         if (users.count <= index){
             return ""
@@ -38,14 +43,19 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
         if let username = users[index]["name"] as? [String: String] {
             var result = String()
             if let first = username["first"] {
-                result += first
+                result += convertFirstToUppercase(first)
             }
             if let last = username["last"] {
-                result += " " + last
+                result += " " + convertFirstToUppercase(last)
             }
             return result
         }
         return ""
+    }
+    
+    private func convertFirstToUppercase(str: String) ->String{
+        let ind = advance(str.startIndex, 1)
+        return str.substringToIndex(ind).uppercaseString + str.substringFromIndex(ind)
     }
     
     private func getValue(index: Int, forKey key:String) -> String{
