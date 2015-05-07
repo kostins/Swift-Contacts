@@ -159,7 +159,7 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
         
         cell.textLabel!.text = self.getUserName(indexPath.row)
         cell.detailTextLabel!.text = "cell: " + getValue(indexPath.row, forKey: "cell") + "\temail: " + getValue(indexPath.row, forKey: "email")
