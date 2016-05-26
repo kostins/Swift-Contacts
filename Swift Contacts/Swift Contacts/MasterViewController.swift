@@ -37,7 +37,7 @@ class MasterViewController: UITableViewController, NSURLConnectionDataDelegate {
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
-            if let indexPath = self.tableView.indexPathForSelectedRow() {
+            if let indexPath = self.tableView.indexPathForSelectedRow {
                 let object = dataProvider?.getUserName(indexPath.row)
             (segue.destinationViewController as! DetailViewController).detailItem = object
             }

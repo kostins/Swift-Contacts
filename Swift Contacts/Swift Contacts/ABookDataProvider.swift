@@ -12,12 +12,13 @@
 import UIKit
 
 class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataSource {
-    private let numberOfUsers = 30      // class variables are not supported by compiler now
-    private let sizeOfUserData = 1000   // class variables are not supported by compiler now
+    private let numberOfUsers = 30
+    private let sizeOfUserData = 1000
+    private var connection:NSURLConnection?
     private var responseData: NSMutableData?
     
     // primitive data model
-    // best implementation can be provided using SQLlite
+    // best implementation can be provided using SQLlite or Core Data
     private var users: [Dictionary<String, AnyObject>] = Array()
     
     private weak var tableView: UITableView?
@@ -25,9 +26,9 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
     override init(){
         super.init()
         responseData = NSMutableData(capacity: (numberOfUsers*sizeOfUserData))
-        let request = NSURLRequest(URL: NSURL(scheme: "http", host: "api.randomuser.me", path: "/?results=\(numberOfUsers)")!)
-        let connection = NSURLConnection(request: request, delegate: self)
-
+        let request = NSURLRequest(URL: NSURL(scheme: "https", host: "randomuser.me/api", path: "/?results=\(numberOfUsers)")!)
+        connection = NSURLConnection(request: request, delegate: self)
+        
     }
     // MARK: - Accessors
     private var count: Int{
@@ -54,7 +55,8 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
     }
     
     private func convertFirstToUppercase(str: String) ->String{
-        let ind = advance(str.startIndex, 1)
+        if str.isEmpty {return str}
+        let ind = str.startIndex.advancedBy(1)
         return str.substringToIndex(ind).uppercaseString + str.substringFromIndex(ind)
     }
     
@@ -69,7 +71,7 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
     }
     // MARK: - Operations
     private func sortUsers(){
-        users.sort{ (o1:[String: AnyObject], o2:[String: AnyObject]) -> Bool in
+        users.sortInPlace{ (o1:[String: AnyObject], o2:[String: AnyObject]) -> Bool in
             var s1 = ""
             if let name = o1["name"] as? [String: String] {
                 if let last = name["last"] {
@@ -94,53 +96,53 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
     
     // MARK: - NSURLConnectionDataDelegate Protocol
     
-    func connection(_ connection: NSURLConnection, didReceiveResponse response: NSURLResponse){
+    func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse){
         self.responseData?.length = 0
     }
     
-    func connection(_ connection: NSURLConnection, didReceiveData data: NSData) {
+    func connection(connection: NSURLConnection, didReceiveData data: NSData) {
         self.responseData?.appendData(data)
     }
     
-    func connection(_ connection: NSURLConnection, didFailWithError error: NSError) {
+    func connection(connection: NSURLConnection, didFailWithError error: NSError) {
         reportError(error.description)
     }
     
-    func connectionDidFinishLoading(_ connection: NSURLConnection) {
+    func connection(connection: NSURLConnection, willSendRequestForAuthenticationChallenge challenge: NSURLAuthenticationChallenge) {
+        // Let's trust to self-signed sertificate
+        if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+            challenge.sender!.useCredential(NSURLCredential(forTrust:challenge.protectionSpace.serverTrust!), forAuthenticationChallenge:challenge)
+        }
+    }
+    
+    func connectionDidFinishLoading(connection: NSURLConnection) {
         assert(responseData != nil && responseData!.length != 0, "Data buffer empty")
-        var error: NSError?
         // extract users into users array
-        let result: AnyObject? = NSJSONSerialization.JSONObjectWithData(responseData!, options: NSJSONReadingOptions.MutableContainers, error: &error)
-        if result == nil {reportError(error!.description);return}
+        var result: AnyObject?
+        do {
+            result = try NSJSONSerialization.JSONObjectWithData(responseData!, options: NSJSONReadingOptions.MutableContainers)
+        } catch let error as NSError {
+            reportError(error.description)
+            return
+        }
         // unwrap {results:[*]}
         let dResult = result as? [String: AnyObject]
         if dResult == nil {reportError("Data format is not supported");return}
         for (keyResult, valueResults) in dResult!{
-            if keyResult != "results"{
-                reportError("Data Server is out of order")
-                return
-            }
-            //  process array of user/seed dictionaries
-            let userArray = valueResults as? [NSDictionary]
-            if userArray == nil {reportError("Data Format error"); return}
-            for user in userArray!{
-                let dUser = user as? [String: AnyObject]
-                if dUser == nil {reportError("Data Format error"); return}
-                // unwrap user dictionary
-                for (keyUser, valueUser) in dUser!{
-                    if keyUser != "user" {
-                        // this should be "seed" element, omit it
-                        continue
-                    }
-                    if let userDictionary = valueUser as? [String: AnyObject]{
-                        users.append(userDictionary)
-                        if getUserName(users.count-1).isEmpty{
-                            users.removeLast()
-                        }
-                    }
-                }// end user loop
-            }// end array loop
-        }// end results loop
+            if keyResult == "results"{
+                //  process array of user/seed dictionaries
+                let userArray = valueResults as? [NSDictionary]
+                if userArray == nil {reportError("Data Format error: no array for results key"); return}
+                for user in userArray!{
+                    let dUser = user as? [String: AnyObject]
+                    if dUser == nil {reportError("Data Format error: array member is not a dictionary"); return}
+                    users.append(dUser!)
+                    if getUserName(users.count-1).isEmpty{
+                        users.removeLast()
+                    }// end user loop
+                }// end array of users loop
+            }// end if statement
+        }// end keys loop
         responseData = nil  //release
         if users.count == 0 {
             reportError("Random User server did not provide any data.", releaseData: false)
@@ -159,7 +161,7 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
         cell.textLabel!.text = self.getUserName(indexPath.row)
         cell.detailTextLabel!.text = "cell: " + getValue(indexPath.row, forKey: "cell") + "\temail: " + getValue(indexPath.row, forKey: "email")
@@ -167,5 +169,4 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
         return cell
     }
     
-
 }
