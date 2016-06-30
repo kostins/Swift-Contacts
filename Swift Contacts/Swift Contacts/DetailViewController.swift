@@ -13,7 +13,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var detailDescriptionLabel: UILabel!
 
 
-    var detailItem: String? {
+    var detailItem: AnyObject? {
         didSet {
             // Update the view.
             self.configureView()
@@ -22,9 +22,19 @@ class DetailViewController: UIViewController {
 
     func configureView() {
         // Update the user interface for the detail item.
-        if let detail: String = self.detailItem {
+        if let detail = self.detailItem {
             if let label = self.detailDescriptionLabel {
-                label.text = "TODO: show details for user: " + detail
+                var name = String()
+                if let title = detail.valueForKey("title")?.description {
+                    name += title
+                }
+                if let first = detail.valueForKey("firstname")?.description {
+                    name += " " + first
+                }
+                if let last = detail.valueForKey("lastname")?.description {
+                    name += " " + last
+                }
+                label.text = "TODO: show details for user: " + name
             }
         }
     }

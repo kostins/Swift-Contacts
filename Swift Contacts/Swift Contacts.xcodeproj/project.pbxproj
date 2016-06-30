@@ -19,6 +19,7 @@
 		D4BBE0181A3C85CB00BCA531 /* Swift_ContactsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBE0171A3C85CB00BCA531 /* Swift_ContactsTests.swift */; };
 		D4BBE0241A3D029000BCA531 /* ABookDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBE0231A3D029000BCA531 /* ABookDataProvider.swift */; };
 		D4BBE0251A3D029000BCA531 /* ABookDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBE0231A3D029000BCA531 /* ABookDataProvider.swift */; };
+		D4C474D61D160F9000CD4FED /* SwiftContacts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D4C474D41D160F9000CD4FED /* SwiftContacts.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		D4BBE0161A3C85CB00BCA531 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4BBE0171A3C85CB00BCA531 /* Swift_ContactsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_ContactsTests.swift; sourceTree = "<group>"; };
 		D4BBE0231A3D029000BCA531 /* ABookDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ABookDataProvider.swift; sourceTree = "<group>"; };
+		D4C474D51D160F9000CD4FED /* SwiftContacts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SwiftContacts.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 				D4BBE0081A3C85CA00BCA531 /* Images.xcassets */,
 				D4BBE00A1A3C85CA00BCA531 /* LaunchScreen.xib */,
 				D4BBDFFD1A3C85CA00BCA531 /* Supporting Files */,
+				D4C474D41D160F9000CD4FED /* SwiftContacts.xcdatamodeld */,
 			);
 			path = "Swift Contacts";
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4C474D61D160F9000CD4FED /* SwiftContacts.xcdatamodeld in Sources */,
 				D4BBE0041A3C85CA00BCA531 /* DetailViewController.swift in Sources */,
 				D4BBE0021A3C85CA00BCA531 /* MasterViewController.swift in Sources */,
 				D4BBE0001A3C85CA00BCA531 /* AppDelegate.swift in Sources */,
@@ -357,6 +361,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Swift Contacts/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.istra.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -369,6 +374,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "Swift Contacts/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.istra.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -436,6 +442,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D4C474D41D160F9000CD4FED /* SwiftContacts.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D4C474D51D160F9000CD4FED /* SwiftContacts.xcdatamodel */,
+			);
+			currentVersion = D4C474D51D160F9000CD4FED /* SwiftContacts.xcdatamodel */;
+			path = SwiftContacts.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D4BBDFF21A3C85CA00BCA531 /* Project object */;
 }
