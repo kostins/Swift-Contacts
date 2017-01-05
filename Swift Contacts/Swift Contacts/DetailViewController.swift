@@ -25,13 +25,13 @@ class DetailViewController: UIViewController {
         if let detail = self.detailItem {
             if let label = self.detailDescriptionLabel {
                 var name = String()
-                if let title = detail.valueForKey("title")?.description {
+                if let title = (detail.value(forKey: "title") as AnyObject).description {
                     name += title
                 }
-                if let first = detail.valueForKey("firstname")?.description {
+                if let first = (detail.value(forKey: "firstname") as AnyObject).description {
                     name += " " + first
                 }
-                if let last = detail.valueForKey("lastname")?.description {
+                if let last = (detail.value(forKey: "lastname") as AnyObject).description {
                     name += " " + last
                 }
                 label.text = "TODO: show details for user: " + name

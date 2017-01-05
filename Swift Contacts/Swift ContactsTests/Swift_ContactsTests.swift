@@ -28,7 +28,7 @@ class Swift_ContactsTests: XCTestCase {
     
     func testPerformanceExample() {
 
-        self.measureBlock() {
+        self.measure() {
         }
     }
     

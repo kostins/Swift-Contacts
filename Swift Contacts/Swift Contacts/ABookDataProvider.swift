@@ -13,25 +13,25 @@ import UIKit
 import CoreData
 
 class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
-    private let numberOfUsers = 30
-    private let sizeOfUserData = 1000
-    private var connection:NSURLConnection?
-    private var responseData: NSMutableData?
+    fileprivate let numberOfUsers = 30
+    fileprivate let sizeOfUserData = 1000
+    fileprivate var connection:NSURLConnection?
+    fileprivate var responseData: NSMutableData?
     
     // JSON object obtained from web services is kept in Core Data
-    private var managedObjectContext: NSManagedObjectContext? {
+    fileprivate var managedObjectContext: NSManagedObjectContext? {
         let appDelegate =
-        UIApplication.sharedApplication().delegate as! AppDelegate
+        UIApplication.shared.delegate as! AppDelegate
     
         return appDelegate.managedObjectContext
     }
     
-    private weak var tableView: UITableView?
+    fileprivate weak var tableView: UITableView?
     
     override init(){
         super.init()
         responseData = NSMutableData(capacity: (numberOfUsers*sizeOfUserData))
-        let request = NSURLRequest(URL: NSURL(string: "https://randomuser.me/api/?results=\(numberOfUsers)")!)
+        let request = URLRequest(url: URL(string: "https://randomuser.me/api/?results=\(numberOfUsers)")!)
         connection = NSURLConnection(request: request, delegate: self)
         
     }
@@ -39,49 +39,52 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
     
     var isDataLoaded: Bool {return responseData == nil}
     
-    private func convertFirstToUppercase(str: String) ->String{
+    fileprivate func convertFirstToUppercase(_ str: String) ->String{
         if str.isEmpty {return str}
-        let ind = str.startIndex.advancedBy(1)
-        return str.substringToIndex(ind).uppercaseString + str.substringFromIndex(ind)
+        var s = str.characters.map {
+            "\($0)"
+        }
+        s[0] = s[0].capitalized
+        return s.joined(separator: "")
     }
     
     // MARK: - Operations
     
-    private func reportError(details: String, releaseData: Bool = true){
-        let alert = UIAlertController(title: "JSON Data Provider", message: details, preferredStyle:.Alert)
-        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default){(action:UIAlertAction) -> Void in}
+    fileprivate func reportError(_ details: String, releaseData: Bool = true){
+        let alert = UIAlertController(title: "JSON Data Provider", message: details, preferredStyle:.alert)
+        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default){(action:UIAlertAction) -> Void in}
         alert.addAction(action)
-        UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alert, animated:true, completion:nil)
+        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated:true, completion:nil)
         if releaseData {responseData = nil;}
     }
     
     // MARK: - NSURLConnectionDataDelegate Protocol
     
-    func connection(connection: NSURLConnection, didReceiveResponse response: NSURLResponse){
+    func connection(_ connection: NSURLConnection, didReceive response: URLResponse){
         self.responseData?.length = 0
     }
     
-    func connection(connection: NSURLConnection, didReceiveData data: NSData) {
-        self.responseData?.appendData(data)
+    func connection(_ connection: NSURLConnection, didReceive data: Data) {
+        self.responseData?.append(data)
     }
     
-    func connection(connection: NSURLConnection, didFailWithError error: NSError) {
-        reportError(error.description)
+    func connection(_ connection: NSURLConnection, didFailWithError error: Error) {
+        reportError(error.localizedDescription)
     }
     
-    func connection(connection: NSURLConnection, willSendRequestForAuthenticationChallenge challenge: NSURLAuthenticationChallenge) {
+    func connection(_ connection: NSURLConnection, willSendRequestFor challenge: URLAuthenticationChallenge) {
         // Let's trust to self-signed sertificate
         if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
-            challenge.sender!.useCredential(NSURLCredential(forTrust:challenge.protectionSpace.serverTrust!), forAuthenticationChallenge:challenge)
+            challenge.sender!.use(URLCredential(trust:challenge.protectionSpace.serverTrust!), for:challenge)
         }
     }
     
-    func connectionDidFinishLoading(connection: NSURLConnection) {
+    func connectionDidFinishLoading(_ connection: NSURLConnection) {
         assert(responseData != nil && responseData!.length != 0, "Data buffer empty")
         // extract users into users array
-        var result: AnyObject?
+        var result: Any?
         do {
-            result = try NSJSONSerialization.JSONObjectWithData(responseData!, options: NSJSONReadingOptions.MutableContainers)
+            result = try JSONSerialization.jsonObject(with: responseData! as Data, options: JSONSerialization.ReadingOptions.mutableContainers)
         } catch let error as NSError {
             reportError(error.description)
             return
@@ -123,14 +126,14 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
         }
     }
     
-    func clearCoreData(entity:String) {
-        let fetchRequest = NSFetchRequest()
-        fetchRequest.entity = NSEntityDescription.entityForName(entity, inManagedObjectContext: managedObjectContext!)
+    func clearCoreData(_ entity:String) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        fetchRequest.entity = NSEntityDescription.entity(forEntityName: entity, in: managedObjectContext!)
         fetchRequest.includesPropertyValues = false
         do {
             if let results = fetchedResultsController.fetchedObjects as? [NSManagedObject] {
                 for result in results {
-                    managedObjectContext!.deleteObject(result)
+                    managedObjectContext!.delete(result)
                 }
                 
                 try managedObjectContext!.save()
@@ -141,25 +144,25 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
     }
     // MARK: - UITableViewDataSource
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         self.tableView = tableView
         let sectionInfo = self.fetchedResultsController.sections![section]
         return sectionInfo.numberOfObjects
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell
         
-        let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject
+        let object = self.fetchedResultsController.object(at: indexPath) as! NSManagedObject
         self.configureCell(cell, withObject: object)
         
         return cell
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
             let context = self.fetchedResultsController.managedObjectContext
-            context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
+            context.delete(self.fetchedResultsController.object(at: indexPath) as! NSManagedObject)
             
             do {
                 try context.save()
@@ -172,26 +175,26 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
         }
     }
     
-    func configureCell(cell: UITableViewCell, withObject object: NSManagedObject) {
+    func configureCell(_ cell: UITableViewCell, withObject object: NSManagedObject) {
         var name = String()
-        if let first = object.valueForKey("firstname")?.description {
+        if let first = (object.value(forKey: "firstname") as? String)?.description {
             name += first
         }
-        if let last = object.valueForKey("lastname")?.description {
+        if let last = (object.value(forKey: "lastname") as? String)?.description {
             name += " " + last
         }
         cell.textLabel!.text = name
-        let phone = object.valueForKey("cell")?.description ?? String()
-        let email = object.valueForKey("email")?.description ?? String()
+        let phone = (object.value(forKey: "cell") as? String)?.description ?? String()
+        let email = (object.value(forKey: "email") as? String)?.description ?? String()
         cell.detailTextLabel!.text = "cell: \(phone)\temail: \(email)"
     }
     
     // MARK: - Fetched results controller
     
-    func insertNewObject(user: Dictionary<String, AnyObject>) {
+    func insertNewObject(_ user: Dictionary<String, AnyObject>) {
         let context = self.fetchedResultsController.managedObjectContext
         let entity = self.fetchedResultsController.fetchRequest.entity!
-        let newManagedObject = NSEntityDescription.insertNewObjectForEntityForName(entity.name!, inManagedObjectContext: context)
+        let newManagedObject = NSEntityDescription.insertNewObject(forEntityName: entity.name!, into: context)
         
         // If appropriate, configure the new managed object.
         // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
@@ -220,16 +223,16 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
         }
     }
     
-    private var _fetchedResultsController: NSFetchedResultsController? = nil
+    fileprivate var _fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
-    var fetchedResultsController: NSFetchedResultsController {
+    var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult> {
         if _fetchedResultsController != nil {
             return _fetchedResultsController!
         }
         
-        let fetchRequest = NSFetchRequest()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         // Edit the entity name as appropriate.
-        let entity = NSEntityDescription.entityForName("Contacts", inManagedObjectContext: self.managedObjectContext!)
+        let entity = NSEntityDescription.entity(forEntityName: "Contacts", in: self.managedObjectContext!)
         fetchRequest.entity = entity
         
         // Set the batch size to a suitable number.
@@ -260,35 +263,35 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
         return _fetchedResultsController!
     }
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView?.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch type {
-        case .Insert:
-            self.tableView?.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-        case .Delete:
-            self.tableView?.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .insert:
+            self.tableView?.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .delete:
+            self.tableView?.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
         default:
             return
         }
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
-        case .Insert:
-            tableView?.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-        case .Delete:
-            tableView?.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-        case .Update:
-            self.configureCell(tableView!.cellForRowAtIndexPath(indexPath!)!, withObject: anObject as! NSManagedObject)
-        case .Move:
-            tableView?.moveRowAtIndexPath(indexPath!, toIndexPath: newIndexPath!)
+        case .insert:
+            tableView?.insertRows(at: [newIndexPath!], with: .fade)
+        case .delete:
+            tableView?.deleteRows(at: [indexPath!], with: .fade)
+        case .update:
+            self.configureCell(tableView!.cellForRow(at: indexPath!)!, withObject: anObject as! NSManagedObject)
+        case .move:
+            tableView?.moveRow(at: indexPath!, to: newIndexPath!)
         }
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView?.endUpdates()
     }
     
