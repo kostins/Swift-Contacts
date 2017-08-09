@@ -42,9 +42,15 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
     fileprivate func convertFirstToUppercase(_ str: String) ->String{
         if str.isEmpty {return str}
         var s = str.characters.map {
-            "\($0)"
+            String($0)
         }
         s[0] = s[0].capitalized
+        // Capitalize all words in name
+        for i in 0 ..< s.count - 1 {
+            if s[i] == " " {
+                s[i+1] = s[i+1].capitalized
+            }
+        }
         return s.joined(separator: "")
     }
     
@@ -176,17 +182,9 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
     }
     
     func configureCell(_ cell: UITableViewCell, withObject object: NSManagedObject) {
-        var name = String()
-        if let first = (object.value(forKey: "firstname") as? String)?.description {
-            name += first
+        if let c = cell as? MasterCell {
+            c.object = object
         }
-        if let last = (object.value(forKey: "lastname") as? String)?.description {
-            name += " " + last
-        }
-        cell.textLabel!.text = name
-        let phone = (object.value(forKey: "cell") as? String)?.description ?? String()
-        let email = (object.value(forKey: "email") as? String)?.description ?? String()
-        cell.detailTextLabel!.text = "cell: \(phone)\temail: \(email)"
     }
     
     // MARK: - Fetched results controller
@@ -220,6 +218,11 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
         }
         if let cell = user["cell"] as? String{
             newManagedObject.setValue(cell, forKey: "cell")
+        }
+        if let picture = user["picture"] as? [String : String] {
+            if let thumb = picture["thumbnail"] {
+                newManagedObject.setValue(thumb, forKey: "thumbnail")
+            }
         }
     }
     

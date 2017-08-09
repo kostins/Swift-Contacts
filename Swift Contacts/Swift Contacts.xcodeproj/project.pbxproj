@@ -20,6 +20,8 @@
 		D4BBE0241A3D029000BCA531 /* ABookDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBE0231A3D029000BCA531 /* ABookDataProvider.swift */; };
 		D4BBE0251A3D029000BCA531 /* ABookDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BBE0231A3D029000BCA531 /* ABookDataProvider.swift */; };
 		D4C474D61D160F9000CD4FED /* SwiftContacts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D4C474D41D160F9000CD4FED /* SwiftContacts.xcdatamodeld */; };
+		D4C57E761ECA383300C5E6AD /* MasterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C57E751ECA383300C5E6AD /* MasterCell.swift */; };
+		D4C57E771ECA3EB300C5E6AD /* MasterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C57E751ECA383300C5E6AD /* MasterCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +48,7 @@
 		D4BBE0171A3C85CB00BCA531 /* Swift_ContactsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_ContactsTests.swift; sourceTree = "<group>"; };
 		D4BBE0231A3D029000BCA531 /* ABookDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ABookDataProvider.swift; sourceTree = "<group>"; };
 		D4C474D51D160F9000CD4FED /* SwiftContacts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SwiftContacts.xcdatamodel; sourceTree = "<group>"; };
+		D4C57E751ECA383300C5E6AD /* MasterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +97,9 @@
 				D4BBE0051A3C85CA00BCA531 /* Main.storyboard */,
 				D4BBE0081A3C85CA00BCA531 /* Images.xcassets */,
 				D4BBE00A1A3C85CA00BCA531 /* LaunchScreen.xib */,
-				D4BBDFFD1A3C85CA00BCA531 /* Supporting Files */,
+				D4C57E751ECA383300C5E6AD /* MasterCell.swift */,
 				D4C474D41D160F9000CD4FED /* SwiftContacts.xcdatamodeld */,
+				D4BBDFFD1A3C85CA00BCA531 /* Supporting Files */,
 			);
 			path = "Swift Contacts";
 			sourceTree = "<group>";
@@ -232,6 +236,7 @@
 				D4C474D61D160F9000CD4FED /* SwiftContacts.xcdatamodeld in Sources */,
 				D4BBE0041A3C85CA00BCA531 /* DetailViewController.swift in Sources */,
 				D4BBE0021A3C85CA00BCA531 /* MasterViewController.swift in Sources */,
+				D4C57E761ECA383300C5E6AD /* MasterCell.swift in Sources */,
 				D4BBE0001A3C85CA00BCA531 /* AppDelegate.swift in Sources */,
 				D4BBE0241A3D029000BCA531 /* ABookDataProvider.swift in Sources */,
 			);
@@ -244,6 +249,7 @@
 				D4BBE0181A3C85CB00BCA531 /* Swift_ContactsTests.swift in Sources */,
 				D4BBE0251A3D029000BCA531 /* ABookDataProvider.swift in Sources */,
 				D442E34D1A3E23E300126713 /* MasterViewController.swift in Sources */,
+				D4C57E771ECA3EB300C5E6AD /* MasterCell.swift in Sources */,
 				D442E34F1A3E313700126713 /* AppDelegate.swift in Sources */,
 				D442E34E1A3E26D000126713 /* DetailViewController.swift in Sources */,
 			);
