@@ -12,34 +12,39 @@
 import UIKit
 import CoreData
 
-class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
-    fileprivate let numberOfUsers = 30
-    fileprivate let sizeOfUserData = 1000
-    fileprivate var connection:NSURLConnection?
-    fileprivate var responseData: NSMutableData?
+class ABookDataProvider: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+    // MARK: - Properties
+    private let numberOfUsers = 30
     
     // JSON object obtained from web services is kept in Core Data
-    fileprivate var managedObjectContext: NSManagedObjectContext? {
+    private var managedObjectContext: NSManagedObjectContext? {
         let appDelegate =
         UIApplication.shared.delegate as! AppDelegate
     
         return appDelegate.managedObjectContext
     }
     
-    fileprivate weak var tableView: UITableView?
+    private weak var tableView: UITableView?
     
     override init(){
         super.init()
-        responseData = NSMutableData(capacity: (numberOfUsers*sizeOfUserData))
-        let request = URLRequest(url: URL(string: "https://randomuser.me/api/?results=\(numberOfUsers)")!)
-        connection = NSURLConnection(request: request, delegate: self)
+        
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        let url = URL(string: "https://randomuser.me/api/?results=\(numberOfUsers)")!
+        let task = session.dataTask(with: url) { (data, response, error) in
+            if error != nil {
+                self.reportError(error!.localizedDescription)
+            } else {
+                self.serializeJSON(data) // JSON Serialization
+            }
+        }
+        task.resume()
         
     }
-    // MARK: - Accessors
     
-    var isDataLoaded: Bool {return responseData == nil}
-    
-    fileprivate func convertFirstToUppercase(_ str: String) ->String{
+    // MARK: - Operations
+    private func convertFirstToUppercase(_ str: String) ->String{
         if str.isEmpty {return str}
         var s = str.characters.map {
             String($0)
@@ -54,43 +59,19 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
         return s.joined(separator: "")
     }
     
-    // MARK: - Operations
-    
-    fileprivate func reportError(_ details: String, releaseData: Bool = true){
+    private func reportError(_ details: String){
         let alert = UIAlertController(title: "JSON Data Provider", message: details, preferredStyle:.alert)
         let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default){(action:UIAlertAction) -> Void in}
         alert.addAction(action)
         UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated:true, completion:nil)
-        if releaseData {responseData = nil;}
     }
     
-    // MARK: - NSURLConnectionDataDelegate Protocol
-    
-    func connection(_ connection: NSURLConnection, didReceive response: URLResponse){
-        self.responseData?.length = 0
-    }
-    
-    func connection(_ connection: NSURLConnection, didReceive data: Data) {
-        self.responseData?.append(data)
-    }
-    
-    func connection(_ connection: NSURLConnection, didFailWithError error: Error) {
-        reportError(error.localizedDescription)
-    }
-    
-    func connection(_ connection: NSURLConnection, willSendRequestFor challenge: URLAuthenticationChallenge) {
-        // Let's trust to self-signed sertificate
-        if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
-            challenge.sender!.use(URLCredential(trust:challenge.protectionSpace.serverTrust!), for:challenge)
-        }
-    }
-    
-    func connectionDidFinishLoading(_ connection: NSURLConnection) {
-        assert(responseData != nil && responseData!.length != 0, "Data buffer empty")
+    private func serializeJSON(_ data:Data?){
+        if data == nil {return}
         // extract users into users array
         var result: Any?
         do {
-            result = try JSONSerialization.jsonObject(with: responseData! as Data, options: JSONSerialization.ReadingOptions.mutableContainers)
+            result = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)
         } catch let error as NSError {
             reportError(error.description)
             return
@@ -111,9 +92,8 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
                 }// end array of users loop
             }// end if statement
         }// end keys loop
-        responseData = nil  //release
         if users.count == 0 {
-            reportError("Random User server did not provide any data.", releaseData: false)
+            reportError("Random User server did not provide any data.")
         }
         else{
             clearCoreData("Contacts")
@@ -188,7 +168,6 @@ class ABookDataProvider: NSObject, NSURLConnectionDataDelegate, UITableViewDataS
     }
     
     // MARK: - Fetched results controller
-    
     func insertNewObject(_ user: Dictionary<String, AnyObject>) {
         let context = self.fetchedResultsController.managedObjectContext
         let entity = self.fetchedResultsController.fetchRequest.entity!
