@@ -15,12 +15,11 @@ import CoreData
 class ABookDataProvider: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     // MARK: - Properties
     private let numberOfUsers = 30
-    
+    private let appDelegate =
+        UIApplication.shared.delegate as! AppDelegate
+
     // JSON object obtained from web services is kept in Core Data
     private var managedObjectContext: NSManagedObjectContext? {
-        let appDelegate =
-        UIApplication.shared.delegate as! AppDelegate
-    
         return appDelegate.managedObjectContext
     }
     
@@ -108,7 +107,9 @@ class ABookDataProvider: NSObject, UITableViewDataSource, NSFetchedResultsContro
                 //print("Unresolved error \(error), \(error.userInfo)")
                 abort()
             }
-            tableView?.reloadData()
+            DispatchQueue.main.async {
+                self.tableView?.reloadData()
+            }
         }
     }
     
